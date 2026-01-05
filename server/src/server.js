@@ -1,10 +1,15 @@
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 import createApp from "./app.js";
+import { connectDb } from "./config/db.js";
+import { loadEnv } from "./config/env.js";
 
-export function start() {
-  const port = process.env.PORT || 5000;
+export async function start() {
+  const env = loadEnv();
+  await connectDb(env.mongodbUri);
+
   const app = createApp();
+  const port = env.port;
 
   return app.listen(port, () => {
     console.log(`http://localhost:${port}`);
@@ -20,5 +25,8 @@ function isDirectRun() {
 }
 
 if (isDirectRun()) {
-  start();
+  start().catch((err) => {
+    console.error(err);
+    process.exit(1);
+  });
 }
