@@ -72,10 +72,226 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/cart": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Cart */
+        get: operations["get_cart_v1_cart_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/cart/items": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Post Cart Item */
+        post: operations["post_cart_item_v1_cart_items_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/cart/items/{line_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Delete Cart Item */
+        delete: operations["delete_cart_item_v1_cart_items__line_id__delete"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/checkout/quote": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Quote */
+        get: operations["get_quote_v1_checkout_quote_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/orders": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Post Order */
+        post: operations["post_order_v1_orders_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/orders/{order_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Order */
+        get: operations["get_order_v1_orders__order_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/orders/{order_id}/confirm-dev": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Post Confirm Dev */
+        post: operations["post_confirm_dev_v1_orders__order_id__confirm_dev_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/webhooks/stripe": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Post Stripe Webhook */
+        post: operations["post_stripe_webhook_v1_webhooks_stripe_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
+        /** CartItemIn */
+        CartItemIn: {
+            /** Product Slug */
+            product_slug: string;
+            /**
+             * Size
+             * @enum {string}
+             */
+            size: "S" | "M" | "L";
+            /**
+             * Milk
+             * @enum {string}
+             */
+            milk: "whole" | "oat" | "almond" | "soy" | "coconut" | "none";
+            /**
+             * Temp
+             * @enum {string}
+             */
+            temp: "hot" | "iced";
+            /** Sugar */
+            sugar: number;
+            /** Shots */
+            shots: number;
+            /** Syrups */
+            syrups?: ("vanilla" | "caramel" | "hazelnut" | "berry")[];
+            /** Foam */
+            foam: boolean;
+            /**
+             * Art
+             * @enum {string}
+             */
+            art: "none" | "heart" | "leaf" | "rosetta";
+            /**
+             * Quantity
+             * @default 1
+             */
+            quantity: number;
+        };
+        /** CartLineOut */
+        CartLineOut: {
+            /** Id */
+            id: string;
+            /** Product Slug */
+            product_slug: string;
+            /** Name */
+            name: string;
+            /** Size */
+            size: string;
+            /** Milk */
+            milk: string;
+            /** Temp */
+            temp: string;
+            /** Sugar */
+            sugar: number;
+            /** Shots */
+            shots: number;
+            /** Syrups */
+            syrups: string[];
+            /** Foam */
+            foam: boolean;
+            /** Art */
+            art: string;
+            /** Quantity */
+            quantity: number;
+            /** Unit Price */
+            unit_price: string;
+            /** Currency */
+            currency: string;
+        };
+        /** CartOut */
+        CartOut: {
+            /** Count */
+            count: number;
+            /** Total */
+            total: string;
+            /** Currency */
+            currency: string;
+            /** Items */
+            items: components["schemas"]["CartLineOut"][];
+        };
         /** ConfigFlags */
         ConfigFlags: {
             /** Anim */
@@ -163,6 +379,111 @@ export interface components {
             name: string;
             /** Prep Minutes */
             prep_minutes: number;
+        };
+        /** OrderIn */
+        OrderIn: {
+            /**
+             * Store
+             * @default riverside
+             */
+            store: string;
+            /**
+             * Fulfilment
+             * @default pickup
+             * @constant
+             */
+            fulfilment: "pickup";
+            /**
+             * Payment Method
+             * @enum {string}
+             */
+            payment_method: "card" | "cash";
+            /** Contact Name */
+            contact_name: string;
+            /** Contact Phone */
+            contact_phone?: string | null;
+        };
+        /** OrderLineOut */
+        OrderLineOut: {
+            /** Name */
+            name: string;
+            /** Size */
+            size: string;
+            /** Milk */
+            milk: string;
+            /** Temp */
+            temp: string;
+            /** Quantity */
+            quantity: number;
+            /** Unit Price */
+            unit_price: string;
+        };
+        /** OrderOut */
+        OrderOut: {
+            /** Id */
+            id: string;
+            /** Code */
+            code: string;
+            /** Status */
+            status: string;
+            /** Fulfilment */
+            fulfilment: string;
+            /** Payment Method */
+            payment_method: string;
+            /** Payment Status */
+            payment_status: string;
+            /** Subtotal */
+            subtotal: string;
+            /** Discount */
+            discount: string;
+            /** Tip */
+            tip: string;
+            /** Tax */
+            tax: string;
+            /** Total */
+            total: string;
+            /** Currency */
+            currency: string;
+            /** Contact Name */
+            contact_name: string;
+            /** Prep Minutes */
+            prep_minutes: number | null;
+            /** Provider */
+            provider: string | null;
+            /** Client Secret */
+            client_secret: string | null;
+            /** Provider Intent Id */
+            provider_intent_id: string | null;
+            /** Items */
+            items: components["schemas"]["OrderLineOut"][];
+        };
+        /** QuoteLine */
+        QuoteLine: {
+            /** Name */
+            name: string;
+            /** Quantity */
+            quantity: number;
+            /** Unit Price */
+            unit_price: string;
+        };
+        /** QuoteOut */
+        QuoteOut: {
+            /** Subtotal */
+            subtotal: string;
+            /** Tax */
+            tax: string;
+            /** Total */
+            total: string;
+            /** Currency */
+            currency: string;
+            /** Tax Rate */
+            tax_rate: string;
+            /** Prep Minutes */
+            prep_minutes: number;
+            /** Store Name */
+            store_name: string;
+            /** Items */
+            items: components["schemas"]["QuoteLine"][];
         };
         /** ValidationError */
         ValidationError: {
@@ -276,6 +597,236 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_cart_v1_cart_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CartOut"];
+                };
+            };
+        };
+    };
+    post_cart_item_v1_cart_items_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CartItemIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CartOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    delete_cart_item_v1_cart_items__line_id__delete: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                line_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CartOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_quote_v1_checkout_quote_get: {
+        parameters: {
+            query?: {
+                store?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["QuoteOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    post_order_v1_orders_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["OrderIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["OrderOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_order_v1_orders__order_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                order_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["OrderOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    post_confirm_dev_v1_orders__order_id__confirm_dev_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                order_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["OrderOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    post_stripe_webhook_v1_webhooks_stripe_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
                 };
             };
         };
