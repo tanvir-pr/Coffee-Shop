@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { Fraunces, Inter, JetBrains_Mono } from "next/font/google";
+import { AnimFlags } from "@/app/providers/AnimFlags";
 import { MotionProvider } from "@/app/providers/MotionProvider";
-import { CartLink } from "@/components/cart/CartLink";
-import { SiteLinks } from "@/components/nav/SiteLinks";
+import { SiteHeader } from "@/components/nav/SiteHeader";
+import { RouteRitual } from "@/components/motion/should/RouteRitual";
 import { THEME_BOOT_SCRIPT } from "@/lib/theme/timeOfDay";
 import "./globals.css";
 
@@ -38,9 +39,11 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       </head>
       <body className="font-sans text-foreground antialiased">
         <MotionProvider>
-          <SiteLinks />
-          <CartLink />
-          {children}
+          <AnimFlags>
+            <SiteHeader />
+            <RouteRitual />
+            <div id="content">{children}</div>
+          </AnimFlags>
         </MotionProvider>
       </body>
     </html>
